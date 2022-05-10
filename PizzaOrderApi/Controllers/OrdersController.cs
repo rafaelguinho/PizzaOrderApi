@@ -65,5 +65,26 @@ namespace PizzaOrderApi.Controllers
 
             return Accepted();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Order order)
+        {
+            Order currentOrder = _context.Orders.Find(id);
+
+            if (currentOrder == null)
+            {
+                return NotFound();
+            }
+
+            currentOrder.Crust = order.Crust;
+            currentOrder.Size = order.Size;
+            currentOrder.Flavor = order.Flavor;
+            currentOrder.TableNo = order.TableNo;
+
+            _context.Orders.Update(currentOrder);
+            _context.SaveChanges();
+
+            return Ok(currentOrder);
+        }
     }
 }
